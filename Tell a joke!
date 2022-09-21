@@ -1,0 +1,29 @@
+### Tell a Joke!
+
+jokeURL <- "https://official-joke-api.appspot.com/jokes/programming/random"
+jokeURL <- "https://karljoke.herokuapp.com/jokes/programming/random"
+jokeURL <- "https://twittezer.herokuapp.com/random"
+jokeURL <- "https://sharp-mestorf-1d7507.netlify.app/.netlify/functions/index/random_joke"
+
+#install.packages("cowsay")
+library(cowsay)
+library(jsonlite)
+
+while(askYesNo(msg = "Do you want to read a joke?")) {
+  aJoke <- tryCatch(
+    fromJSON(jokeURL),
+    error = function(e) {
+      message(paste("Error:", e))
+    }
+  )
+  
+  cat("\014") # it clears the console!
+  say(what = aJoke["setup"], by = "random") #say is a part of cowsay package and displays an animal along with the joke!
+  
+  if(askYesNo(msg = "Do you want to know the answer?")) {
+    cat("\014")
+    say(what = aJoke["punchline"], by = "random")
+  } else {
+    print("Great Choice. It wasn't that funny anyhow. Lol")
+  }
+}  
