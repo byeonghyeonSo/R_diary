@@ -1,0 +1,54 @@
+### Rock Paper Scissors Lizard Spock!
+
+# Scissors cuts paper, 
+# paper covers rock, 
+# rock crushes lizard, 
+# lizard poisons Spock,
+# Spock smashes scissors, 
+# scissors decapitates lizard, 
+# lizard eats paper, 
+# paper disproves Spock, 
+# Spock vaporizes rock, 
+# and as it always has, rock crushes scissors.
+
+#install.packages("tidyverse")
+library(tidyverse)
+library(data.table)
+
+#Creating a matrix of game winner
+RPSLS_names <- c("rock","paper","scissors","lizard","spock")
+rock_win <- c(FALSE, FALSE, TRUE, TRUE, FALSE)
+paper_win <- c(TRUE, FALSE, FALSE, FALSE, TRUE)
+scissors_win <- c(FALSE, TRUE, FALSE, TRUE, FALSE)
+lizard_win <- c(FALSE, TRUE, FALSE, FALSE, TRUE)
+spock_win <- c(TRUE, FALSE, TRUE, FALSE, FALSE)
+
+RPSLS_winners <- matrix(c(rock_win, paper_win, scissors_win, lizard_win, spock_win),
+                        dimnames = list(RPSLS_names, RPSLS_names),
+                        nrow = 5, byrow = T)
+
+#Playing the game
+winner <- c(Computer = 0, Player = 0) #Setting up a vector to keep track of winners and losers
+barplot(winner)#use barplot
+
+while (TRUE) {
+  computerChoice <- sample(RPSLS_names, 1)
+  userChoice <- RPSLS_names[menu(RPSLS_names, graphics = TRUE, title = "What Do You Choose?")] # adding graphical interface
+  
+  if(length(userChoice) == 0)
+    break
+  
+  print(paste("Computer chose", computerChoice, ". You chose", userChoice))
+  if(computerChoice == userChoice) {
+    print("It's a TIE, you lucky bastard!")
+  } else {
+    if(RPSLS_winners[computerChoice, userChoice]) {
+      print("Computer wins, dumbass!")
+      winner["Computer"] <- winner["Computer"] + 1
+    } else {
+      print("Player wins, my lord...")
+      winner["Player"] <- winner["Player"] + 1}
+    
+  }
+  barplot(winner)
+}
